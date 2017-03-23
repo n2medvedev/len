@@ -7,25 +7,28 @@ from datetime import datetime, date, timedelta
 import calendar
 import locale
 
-#if __name__ == "__main__"  - дает ошибку
 def main():
     date_now = date.today()
-    days_manth = -1*calendar.monthrange(date_now.year,date_now.month-1)[1]+1
-    print(days_manth)
-    d_m = [days_manth,'месяц назад ']
-    dif=[[-1,'вчера'],[0,'сегодня'],[1,'завтра'],d_m]
+    
+    dif=[
+    	[-1,'вчера'],
+    	[0,'сегодня'],
+    	[1,'завтра'],
+    	[-calendar.monthrange(date_now.year,date_now.month-1)[1],'месяц назад ']
+    	]
     
     
-    for d_t in dif:
-        delta = timedelta(days=d_t[0])
+    for d_days,d_text in dif:
+        delta = timedelta(days=d_days)
         dt = date_now+delta
         d_time = dt.strftime('%A %d %B %Y')
-        print (d_t[1],d_time)
+        print (d_text,d_time)
     print ('\n Превращаем строку "01/01/17 12:10:03.234567" в объект datetime :')
     date_str="01/01/17 12:10:03.234567"
     dt = datetime.strptime(date_str, '%m/%d/%y %H:%M:%S.%f')
     print(dt)
 
-#locale.setlocale(locale.LC_TIME, "ru_RU") - дает ошибку
-main()
+locale.setlocale(locale.LC_TIME, "ru_RU.utf-8") # дает ошибку
+if __name__ == "__main__" :
+	main()
 
