@@ -11,7 +11,7 @@ def ask_user(correct_answer='хорошо',аnswer_to_exit='Увидимся'):
      
     while answer != аnswer_to_exit: 
         try:
-            answer = get_answer(input(answer + '\n                                         '))
+            answer = get_answer(input(answer + '\n'+' '*20))
         except KeyboardInterrupt :
             answer = аnswer_to_exit
         except :          #  пришлось вставить ,  вылетала из-за кодировки   
