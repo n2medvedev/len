@@ -1,7 +1,7 @@
 from flask import Flask,abort,request
 from datetime import datetime
 from news_list import all_news
-
+from open_name import get_open_name
 from req import get_weather
 
 
@@ -48,6 +48,46 @@ def news_by_id(news_id):
         return result
     else:
         abort(404)
+
+@app.route('/names') 
+def name_mos():
+    urlx='http://api.data.mos.ru/v1/datasets/2009/rows'
+    try:
+        year = int(request.args.get('year', 'all'))
+    except:
+        year = data[0]['Cells']['Year']
+    data = get_open_name(urlx)
+    data_cell = [ dat['Cells'] for dat in data if dat['Cells']['Year'] == year]
+    result = '<table><tr>'
+    
+    name_column = {}
+    t_col=0
+    for column in data_cell[0]:
+        if not('id' in column):
+            name_column[column] = t_col
+            result += '<th>%s</th>' %column
+            t_col += 1
+    result += '</tr>'
+
+    for row in data_cell:
+
+        result += '<tr>'
+        viso_data = [' ']*len(name_column)
+        for column in row:
+            if not('id' in column):
+                viso_data[name_column[column]] = row[column]
+        for dat in viso_data:
+            result += '<th>%s</th>' %dat
+        result += '</tr>'
+
+
+
+    result += '</table>'
+    
+    return result
+        
+
+
 
 if __name__ == '__main__':
     app.run(port=5010,debug=True)
