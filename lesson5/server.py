@@ -60,24 +60,22 @@ def name_mos():
     data_cell = [ dat['Cells'] for dat in data if dat['Cells']['Year'] == year]
     result = '<table><tr>'
     
-    name_column = {}
-    t_col=0
+    name_column = list()
+    
     for column in data_cell[0]:
         if not('id' in column):
-            name_column[column] = t_col
+            name_column.append(column)
             result += '<th>%s</th>' %column
-            t_col += 1
+            
     result += '</tr>'
 
     for row in data_cell:
 
         result += '<tr>'
-        viso_data = [' ']*len(name_column)
-        for column in row:
-            if not('id' in column):
-                viso_data[name_column[column]] = row[column]
-        for dat in viso_data:
-            result += '<th>%s</th>' %dat
+
+        for column in name_column:
+            result += '<th>%s</th>' %row[column]
+           
         result += '</tr>'
 
 
