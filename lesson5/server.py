@@ -52,17 +52,18 @@ def news_by_id(news_id):
 @app.route('/names') 
 def name_mos():
     urlx='http://api.data.mos.ru/v1/datasets/2009/rows'
+    data = get_open_name(urlx)
     try:
-        year = int(request.args.get('year', 'all'))
+        year = int(request.args.get('year',))
     except:
         year = data[0]['Cells']['Year']
-    data = get_open_name(urlx)
+    
     data_cell = [ dat['Cells'] for dat in data if dat['Cells']['Year'] == year]
     result = '<table><tr>'
     
     name_column = list()
     
-    for column in data_cell[0]:
+    for column in data[0]['Cells']:
         if not('id' in column):
             name_column.append(column)
             result += '<th>%s</th>' %column
